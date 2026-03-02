@@ -42,7 +42,7 @@ end
 function Archiver:ClearExpiredBackups()
 	if not self.config.Enabled then return end
 
-	local curTimestamp = os.time()
+	local curTimestamp, changesMade = os.time(), 0
 	for fileName, timestamp in pairs(self.data) do
 		local timeGap = os.difftime(curTimestamp, timestamp)
 
@@ -52,7 +52,13 @@ function Archiver:ClearExpiredBackups()
 			exports[GetCurrentResourceName()]:DeleteBackup(fileName)
 
 			self.data[fileName] = nil
+
+			changesMade += 1
 		end
+	end
+
+	if changesMade > 0 then
+		self:SaveArchiveData()
 	end
 end
 
