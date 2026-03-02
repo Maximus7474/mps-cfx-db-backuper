@@ -12,6 +12,8 @@ server_scripts {
 	'config.lua',
     'modules/utils.lua',
     'modules/database.lua',
+    'modules/archiver.lua',
+    'modules/fileManager.js',
     'modules/init.lua',
 }
 

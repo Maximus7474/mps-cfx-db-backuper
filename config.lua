@@ -18,6 +18,19 @@ Config = {
 		Interval = 6,
 	},
 
+	-- Handles backup storage
+	Archiver = {
+		Enabled = true,
+
+		-- How long to keep backups before auto-deletion.
+		-- Format: <number><unit> | Units: 'd' (days), 'h' (hours)
+		ClearAfter = "7d",
+
+		-- Minimum number of backups to KEEP, regardless of age. 
+		-- (Prevents your folder from being empty if no new backups run)
+		KeepMinimum = 3,
+	},
+
 	-- Array of table names to not backup
 	ExcludedTables = {
 	-- 	'example_tablename',

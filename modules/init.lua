@@ -2,12 +2,13 @@ RegisterCommand('backup_database', function (source, args)
 	if source ~= 0 then return end
 
 	local fileName = args[1] or BackupFileName()
-	local backupPath = string.format('backups/%s.sql', fileName)
 
-	print(string.format('Saving database backup to: "^3%s^7"', backupPath))
+	print(string.format('Saving database backup to: "^3%s^7"', fileName))
 
 	local payload = DB:CreateFullBackup()
-	SaveResourceFile(GetCurrentResourceName(), backupPath, payload, -1)
+	Archiver:SaveFile(fileName, payload)
+
+	print('Database backup finished successfully')
 end, true)
 
 if Config.Cron.Enabled then
@@ -26,13 +27,15 @@ if Config.Cron.Enabled then
 		)
 	end
 
-	lib.cron.new(cronExpression, function (task, date)
+	lib.cron.new(cronExpression, function ()
 		local fileName = BackupFileName()
-		local backupPath = string.format('backups/%s.sql', fileName)
 
 		print(string.format('[CRON] Saving database backup "^3%s^7"', fileName))
 
 		local payload = DB:CreateFullBackup()
-		SaveResourceFile(GetCurrentResourceName(), backupPath, payload, -1)
+		Archiver:SaveFile(fileName, payload)
+
+		Archiver:ClearExpiredBackups()
+		print('[CRON] Database backup finished successfully')
 	end)
 end
