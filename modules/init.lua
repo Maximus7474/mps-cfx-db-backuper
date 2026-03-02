@@ -35,6 +35,7 @@ if Config.Cron.Enabled then
 		local payload = DB:CreateFullBackup()
 		Archiver:SaveFile(fileName, payload)
 
+		Archiver:ClearExpiredBackups()
 		print('[CRON] Database backup finished successfully')
 	end)
 end
