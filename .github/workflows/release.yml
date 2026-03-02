@@ -48,11 +48,7 @@ jobs:
 
       - name: Bundle files
         run: |
-          mkdir -p ./temp/${{ github.event.repository.name }}
-          cp ./**/*.lua ./temp/${{ github.event.repository.name }}
-          cp ./LICENSE ./temp/${{ github.event.repository.name }}
-          cp ./README.md ./temp/${{ github.event.repository.name }}
-          cd ./temp && zip -r ../${{ github.event.repository.name }}.zip ./${{ github.event.repository.name }}
+          zip -r ${{ github.event.repository.name }}.zip . -x "./.git/*" "./.github/* ".*"
 
       - name: Create Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
