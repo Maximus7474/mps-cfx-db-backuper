@@ -13,14 +13,16 @@ end, true)
 if Config.Cron.Enabled then
 	LoadOxLib()
 
+	local Cron = Config.Cron
 	local cronExpression
-	if Config.Cron.ExpressionOverride then
-		cronExpression = Config.Cron.ExpressionOverride
+	if Cron.ExpressionOverride then
+		cronExpression = Cron.ExpressionOverride
 	else
+		local expression = Cron.Frequency == 'daily' and '0 %d * * *' or '* */%d * * *'
+
 		cronExpression = string.format(
-			'0 %d %d * *',
-			Config.Cron.Hour,
-			Config.Cron.DayFrequency
+			expression,
+			Cron.Interval
 		)
 	end
 
