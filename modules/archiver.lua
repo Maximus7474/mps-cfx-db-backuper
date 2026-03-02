@@ -140,7 +140,7 @@ RegisterCommand('clear_kvp', function (source, args)
     end
 
 	Archiver:ClearArchiveData()
-	print('^2[ARCHIVER]^7 KVP storage and local cache have been cleared.')
+	print('[ARCHIVER] KVP storage and local cache have been cleared.')
 end, true)
 
 -- quick command to dump the kvp into a json file
@@ -152,9 +152,9 @@ RegisterCommand('dump_kvp', function (source, args)
 	local success = SaveResourceFile(resourceName, 'archiveData.json', payload, -1)
 
     if success then
-        print(string.format('^2[ARCHIVER]^7 Data exported to: ^3%s/archiveData.json^7', resourceName))
+        print(string.format('[ARCHIVER] Data exported to: ^3%s/archiveData.json', resourceName))
     else
-        print('^1[ARCHIVER] ERROR:^7 Failed to write file. Check folder permissions.')
+        error('[ARCHIVER] Failed to write file. Check folder permissions.')
     end
 end, true)
 
