@@ -25,16 +25,26 @@ function Archiver:Initialize()
 	self.config = Config.Archiver
 	self:LoadArchiveData()
 
-	local amount, unit = self.config.ClearAfter:match("(%d+)([dh])")
+	-- cleanup the inputted parameter
+	local clearValue = tostring(self.config.ClearAfter):lower():gsub("%s+", "")
+	local amount, unit = clearValue:match("(%d+)([dh])")
     amount = tonumber(amount)
 
-    if unit == "d" then
-        self.clearDelay = amount * 86400
-    elseif unit == "h" then
-        self.clearDelay = amount * 3600
-	else
-		error(string.format('An invalid value was provided for Config.Archiver.ClearAfter ! Please use the indicated value format [number]["d" or "h"]'))
-    end
+	if not amount or not unit then
+		error(string.format(
+			"[ARCHIVER]: Invalid 'ClearAfter' value provided: '%s'\n" ..
+			"Expected Format: A number followed by 'd', 'h', or 'm' (e.g., '7d', '24h', '30m').\n" ..
+			"Current Setting: Check your Config.Archiver.ClearAfter setting.",
+			tostring(clearValue)
+		))
+	end
+
+    local multipliers = {
+        ["d"] = 86400,
+        ["h"] = 3600,
+    }
+
+	self.clearDelay = amount * multipliers[unit]
 
 	Archiver:ClearExpiredBackups()
 end
