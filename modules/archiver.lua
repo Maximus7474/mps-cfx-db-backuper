@@ -50,26 +50,47 @@ function Archiver:Initialize()
 end
 
 function Archiver:ClearExpiredBackups()
-	if not self.config.Enabled then return end
+    if not self.config.Enabled then return end
 
-	local curTimestamp, changesMade = os.time(), 0
-	for fileName, timestamp in pairs(self.data) do
-		local timeGap = os.difftime(curTimestamp, timestamp)
+	-- Messy function for what it is, yes I agree
+	-- the initial stage here sorts all backups in an array,
+	-- this then allows us to guarantee that the system will always
+	-- keep the minimum wanted backup files
 
-		if timeGap >= self.clearDelay then
-			print(string.format('[ARCHIVER] Deleting backup "^3%s^7" being considered as expired...', fileName))
+    local backups = {}
+    for fileName, timestamp in pairs(self.data) do
+        table.insert(backups, { name = fileName, time = timestamp })
+    end
 
-			exports[GetCurrentResourceName()]:DeleteBackup(fileName)
+    local totalBackups, keepMin = #backups, self.config.KeepMinimum
 
-			self.data[fileName] = nil
+    table.sort(backups, function(a, b)
+        return a.time < b.time
+    end)
 
-			changesMade += 1
-		end
-	end
+    local curTimestamp, deletedCount = os.time(), 0
+    for _, fileData in ipairs(backups) do
+        local timeGap = os.difftime(curTimestamp, fileData.time)
 
-	if changesMade > 0 then
-		self:SaveArchiveData()
-	end
+        if timeGap >= self.clearDelay then
+            if (totalBackups - deletedCount) > keepMin then
+                print(string.format('[ARCHIVER] Deleting expired backup: ^3%s^7', fileData.name))
+
+                exports[GetCurrentResourceName()]:DeleteBackup(fileData.name)
+
+                self.data[fileData.name] = nil
+                deletedCount += 1
+            else
+                print(string.format('[ARCHIVER] Skipping deletion of ^3%s^7 to maintain KeepMinimum (%s)', fileData.name, keepMin))
+                break
+            end
+        end
+    end
+
+    if deletedCount > 0 then
+        self:SaveArchiveData()
+        print(string.format('[ARCHIVER] Cleanup complete. Deleted %s file(s).', deletedCount))
+    end
 end
 
 ---load archive data from kvp
