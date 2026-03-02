@@ -44,10 +44,6 @@ Exports all current backup metadata (filenames and Unix timestamps) into a reada
 
 Wipes the internal database tracking. **Warning:** This does not delete physical files, but the script will no longer know how old they are, effectively preventing them from being auto-cleared.
 
-```bash
-clear_kvp
-```
-
 
 #### `load_kvp`
 
@@ -55,10 +51,6 @@ Reads the `archiveData.json` file from the resource directory and restores it in
 
 * **Requirement**: An `archiveData.json` file must exist (created via `dump_kvp`).
 * **Use Case**: Restoring database tracking after a server wipe or migration.
-
-```bash
-load_kvp
-```
 
 
 ---
