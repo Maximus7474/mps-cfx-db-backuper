@@ -2,6 +2,10 @@
 
 For those who want to have a resource handle database backups, this will run within your FiveM or RedM server and create backups of your database.
 
+> [!NOTE]  
+> All suggestions, be it for improvements, security or even requesting new features are welcomed.
+> There is no need for such a resource to be paid, escrowed as it should offer full transparency in it's features and behaviour
+
 ---
 
 ## Usage
