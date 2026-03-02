@@ -70,3 +70,7 @@ end
 function Archiver:SaveArchiveData()
 	SetResourceKvp('archivedata', json.encode(self.data))
 end
+
+CreateThread(function ()
+	Archiver:Initialize()
+end)
