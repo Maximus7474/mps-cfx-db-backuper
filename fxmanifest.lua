@@ -10,7 +10,9 @@ repository 'https://github.com/Maximus7474/cfx-db-backuper'
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
 	'config.lua',
-    'modules/*.lua',
+    'modules/utils.lua',
+    'modules/database.lua',
+    'modules/init.lua',
 }
 
 dependency 'oxmysql'
