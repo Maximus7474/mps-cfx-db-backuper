@@ -24,7 +24,7 @@ function DB:GetTables()
         end
     end
 
-	if #Config.ExclusiveTables > 0 then
+	if Config.ExclusiveTables and #Config.ExclusiveTables > 0 then
 		local filtered = {}
 		for i = 1, #Config.ExclusiveTables do
 			local tableName = Config.ExclusiveTables[i]
@@ -39,7 +39,7 @@ function DB:GetTables()
 		self.cachedTables = filtered
 
 		return filtered
-	elseif #Config.ExcludedTables > 0 then
+	elseif Config.ExcludedTables and #Config.ExcludedTables > 0 then
 		for i = 1, #Config.ExcludedTables do
 			local tableName = Config.ExcludedTables[i]
 
