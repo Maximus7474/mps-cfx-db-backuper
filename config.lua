@@ -18,6 +18,18 @@ Config = {
 		Interval = 6,
 	},
 
+	-- Handles backup storage
+	Archiver = {
+		Enabled = false,
+
+		-- How long should a backup be store for, set to false to disable
+		--[[ Accepted values:
+			- day length: 7d, 6d, 5d, etc...
+			- hour length: 20h, 50h, 100h, etc...
+		]]
+		ClearAfter = "7d",
+	},
+
 	-- Array of table names to not backup
 	ExcludedTables = {
 	-- 	'example_tablename',
