@@ -10,12 +10,12 @@ Config = {
 		-- https://coxdocs.dev/ox_lib/Modules/Cron/Server#cron-expression
 		-- ExpressionOverride = "0 0 * * *",
 
-		-- Number of days between backups
-		DayFrequency = 1,
+		-- Options: "daily" or "hourly"
+		Frequency = "daily",
 
-		-- What hour of the day do you want the backup to occur at
-		-- (24 hour format, accepts values between 0 and 23)
-		Hour = 0,
+		-- If daily: What hour (0-23)
+		-- If hourly: Every X hours (e.g., 2 = every 2 hours)
+		Interval = 6,
 	},
 
 	-- Array of table names to not backup
