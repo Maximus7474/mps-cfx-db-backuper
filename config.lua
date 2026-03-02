@@ -20,13 +20,10 @@ Config = {
 
 	-- Handles backup storage
 	Archiver = {
-		Enabled = false,
+		Enabled = true,
 
-		-- How long should a backup be store for, set to false to disable
-		--[[ Accepted values:
-			- day length: 7d, 6d, 5d, etc...
-			- hour length: 20h, 50h, 100h, etc...
-		]]
+		-- How long to keep backups before auto-deletion.
+		-- Format: <number><unit> | Units: 'd' (days), 'h' (hours)
 		ClearAfter = "7d",
 	},
 
