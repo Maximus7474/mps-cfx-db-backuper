@@ -24,7 +24,7 @@ function DB:GetTables()
         end
     end
 
-	if type(Config.ExclusiveTables) == "table" then
+	if #Config.ExclusiveTables > 0 then
 		local filtered = {}
 		for i = 1, #Config.ExclusiveTables do
 			local tableName = Config.ExclusiveTables[i]
@@ -39,7 +39,7 @@ function DB:GetTables()
 		self.cachedTables = filtered
 
 		return filtered
-	elseif type(Config.ExcludedTables) == "table" then
+	elseif #Config.ExcludedTables > 0 then
 		for i = 1, #Config.ExcludedTables do
 			local tableName = Config.ExcludedTables[i]
 
@@ -69,7 +69,7 @@ function DB:GetTableDef(tableName)
     ::valid::
 
     local query = string.format("SHOW CREATE TABLE `%s`;", tableName)
-    local data = MySQL.single.await(query)
+    local data = MySQL.single.await(query) --[[ @as table<string, unknown> - table will always exist, checks occur prior to this step ]]
 
     return data["Create Table"] .. ";"
 end
@@ -100,10 +100,6 @@ function DB:GetTableData(tableName)
     error(string.format('An invalid table name was passed to "DB:GetTableDef": %s', tableName))
 
     ::valid::
-
-	--[[ Considerations for improvement:
-		- Splitting table up in smaller chunks to avoid oversized queries 
-	]]
 
     local entryCountQuery = string.format("SELECT COUNT(1) as 'entries' FROM `%s`;", tableName)
 	local tableEntries = MySQL.single.await(entryCountQuery)?.entries

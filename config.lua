@@ -3,12 +3,12 @@ Config = {
 	QuerySize = 100,
 
 	-- Array of table names to not backup
-	-- ExcludedTables = {
+	ExcludedTables = {
 	-- 	'example_tablename',
-	-- },
+	},
 
 	-- Array of tables to backup, no other tables will be backed up !
-	-- ExclusiveTables = {
+	ExclusiveTables = {
 	-- 	'users',
-	-- },
+	},
 }
