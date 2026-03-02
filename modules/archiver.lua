@@ -35,6 +35,25 @@ function Archiver:Initialize()
 	else
 		error(string.format('An invalid value was provided for Config.Archiver.ClearAfter ! Please use the indicated value format [number]["d" or "h"]'))
     end
+
+	Archiver:ClearExpiredBackups()
+end
+
+function Archiver:ClearExpiredBackups()
+	if not self.config.Enabled then return end
+
+	local curTimestamp = os.time()
+	for fileName, timestamp in pairs(self.data) do
+		local timeGap = os.difftime(curTimestamp, timestamp)
+
+		if timeGap >= self.clearDelay then
+			print(string.format('[ARCHIVER] Deleting backup "^3%s^7" being considered as expired...', fileName))
+
+			exports[GetCurrentResourceName()]:DeleteBackup(fileName)
+
+			self.data[fileName] = nil
+		end
+	end
 end
 
 ---load archive data from kvp
