@@ -19,3 +19,9 @@ function LoadOxLib()
 
 	return chunk()
 end
+
+---generate a filename for the backup file
+---@return string
+function BackupFileName()
+	return string.format('backup-%s', os.date("%Y%m%d-%H%M%S"))
+end
