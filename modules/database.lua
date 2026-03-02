@@ -4,7 +4,7 @@ DB = {
 }
 
 ---get all table names from the database
----@return string[]
+---@return table<string, boolean>
 function DB:GetTables()
 	if self.cachePopulated then return self.cachedTables end
 
@@ -155,9 +155,7 @@ function DB:CreateFullBackup()
 
     local createQueries, insertQueries = {}, {}
 
-    for i = 1, #tables do
-        local tableName = tables[i]
-
+    for tableName, _ in pairs(tables) do
         local createQuery = DB:GetTableDef(tableName)
         local insertQuery = DB:GetTableData(tableName)
 
